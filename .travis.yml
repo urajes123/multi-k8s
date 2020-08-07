@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t urajes123/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run urajes123/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t urajes123/multi-client ./client
+  - docker build -t urajes123/multi-nginx ./nginx
+  - docker build -t urajes123/multi-server ./server
+  - docker build -t urajes123/multi-worker ./worker
+  #Login into the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to the docker hub
+  - docker push urajes123/multi-client
+  - docker push urajes123/multi-nginx
+  - docker push urajes123/multi-server
+  - docker push urajes123/multi-worker 
