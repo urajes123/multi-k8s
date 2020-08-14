@@ -14,7 +14,7 @@ before_install:
   - gcloud config set project verdant-bruin-286318
   - gcloud config set compute/zone us-east1-b
   - gcloud container clusters get-credentials multi-cluster
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD1" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t urajes123/react-test -f ./client/Dockerfile.dev ./client
 script:
   - docker run -e CI=true urajes123/react-test npm run test
